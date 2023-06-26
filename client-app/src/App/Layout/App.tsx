@@ -8,7 +8,7 @@ function App() {
 const [activities,setActivies]=useState<Activity[]>([]);
 useEffect(()=>{
 axios.get<Activity[]>('http://localhost:5000/api/activities').then(Response=>{
-  console.log(Response);
+  //console.log(Response);
   setActivies(Response.data);
 
 })
