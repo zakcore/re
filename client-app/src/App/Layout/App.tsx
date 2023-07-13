@@ -3,25 +3,50 @@ import axios from 'axios';
 import { Container, Header, List } from 'semantic-ui-react';
 import { Activity } from '../Models/Activity';
 import NavBar from './NavBar';
+import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 
 function App() {
 const [activities,setActivies]=useState<Activity[]>([]);
+const [selectedactivity,setSelectedActivity]=useState<Activity|undefined>(undefined);
+const[editmode,seteditmode]=useState(false)
 useEffect(()=>{
 axios.get<Activity[]>('http://localhost:5000/api/activities').then(Response=>{
-  //console.log(Response);
   setActivies(Response.data);
 
 })
 },[])
 
+function handleSelectedActivity(id:string){
+  setSelectedActivity(activities.find(x=>x.id===id))
+}
+
+function handleCancelSlectActivity(){
+  setSelectedActivity(undefined)
+}
+
+
+function handleFormOpen(id?:string){
+  id?handleSelectedActivity(id):handleCancelSlectActivity()
+  seteditmode(true)
+}
+function handleFormClose(){
+  seteditmode(false)
+}
+
   return (
     <>
-    <NavBar/>
+    <NavBar formOpen={handleFormOpen} />
     <Container style={{marginTop:'7em'}}>
+    <ActivityDashboard Activities={activities} 
+    selectedActivity={selectedactivity} 
+    selectActivity={handleSelectedActivity} 
+    cancelSlectActivity={handleCancelSlectActivity}
+    formOpen={handleFormOpen}
+    formClose={handleFormClose}
+    editMode={editmode}
 
-      <List>{activities.map((activity)=>(
-        <List.Item key={activity.id}>{activity.title}</List.Item >
-      ))}</List>
+    ></ActivityDashboard>
+
     </Container>
      
     </>
