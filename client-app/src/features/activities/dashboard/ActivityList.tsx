@@ -6,9 +6,10 @@ interface Props{
     activities:Activity[]
     selectActivity:(id:string)=>void
     formClose:()=>void
+    deleteActivity:(id:string)=>void
 
 }
-export default function ActivityList({activities,selectActivity,formClose}:Props){
+export default function ActivityList({activities,selectActivity,formClose,deleteActivity}:Props){
 
     return(
 
@@ -25,6 +26,7 @@ export default function ActivityList({activities,selectActivity,formClose}:Props
             </Item.Description>
                 <Item.Extra>
                    <Button onClick={()=>{selectActivity(activity.id); formClose()} } floated="right" color="blue" content="View"/>
+                   <Button onClick={()=>deleteActivity(activity.id) } floated="right" color="red" content="Delete"/>
                 <Label basic content ={activity.category}/>
                 </Item.Extra>
         </Item.Content>
