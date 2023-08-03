@@ -33,7 +33,7 @@ return(
         <Form.Input placeholder='title' value={activity.title} name='title' onChange={HandleOnChange}/>
         <Form.TextArea placeholder='description' value={activity.description} name='description' onChange={HandleOnChange} />
         <Form.Input placeholder='category' value={activity.category} name='category' onChange={HandleOnChange} />
-        <Form.Input placeholder='date' value={activity.date} name='date' onChange={HandleOnChange}/>
+        <Form.Input type='date' placeholder='date' value={activity.date} name='date' onChange={HandleOnChange}/>
         <Form.Input placeholder='city' value={activity.city} name='city' onChange={HandleOnChange}/>
         <Form.Input placeholder='venue' value={activity.venue} name='venue' onChange={HandleOnChange}/>
         <Button positive floated='right' type='submit' content='Submit'/>

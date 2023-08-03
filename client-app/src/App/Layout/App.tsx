@@ -1,19 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import { Container } from 'semantic-ui-react';
 import { Activity } from '../Models/Activity';
 import NavBar from './NavBar';
 import ActivityDashboard from '../../features/activities/dashboard/ActivityDashboard';
 import { v4 as uuid } from 'uuid';
+import agent from '../api/agent';
+import axios, { AxiosResponse } from 'axios';
+import LoadingComponent from './LoadingComponent';
 
 function App() {
 const [activities,setActivies]=useState<Activity[]>([]);
 const [selectedactivity,setSelectedActivity]=useState<Activity|undefined>(undefined);
 const[editmode,seteditmode]=useState(false)
-useEffect(()=>{
-axios.get<Activity[]>('http://localhost:5000/api/activities').then(Response=>{
-  setActivies(Response.data);
+const[loading,setloading]=useState(true)
 
+useEffect(()=>{
+agent.activities.list().then(response=>{
+  
+  var activities:Activity[]=[]
+  response.forEach(e=>{
+
+     e.date=e.date.split('T')[0];
+    activities.push(e)
+  }
+    )
+  setActivies(activities);
+  setloading(false)
+ 
 })
 },[])
 
@@ -46,8 +59,13 @@ function handledeleteActivity(id:string){
   setActivies([...activities.filter(x=>x.id!==id)]);
 }
 
+if (loading ){
+  return(<LoadingComponent  content='Loading....' /> )
+}else{
+
 
   return (
+    
     <>
     <NavBar formOpen={handleFormOpen} />
     <Container style={{marginTop:'7em'}}>
@@ -61,11 +79,13 @@ function handledeleteActivity(id:string){
     editOrCreate={editOrCreateActivity}
     deleteActivity={handledeleteActivity}
     ></ActivityDashboard>
-
+  
     </Container>
      
     </>
   );
+}
+
 }
 
 export default App;
