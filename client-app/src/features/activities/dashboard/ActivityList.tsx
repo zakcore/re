@@ -6,9 +6,8 @@ import { useStore } from "../../../App/stores/store";
 interface Props{
     activities:Activity[]
     deleteActivity:(id:string)=>void
-    submitting:boolean
 }
-export default function ActivityList({activities,deleteActivity,submitting}:Props){
+export default function ActivityList({activities,deleteActivity}:Props){
 const [target,settarget]=useState('')
 function handledeleteActivity(e:SyntheticEvent<HTMLButtonElement>,id:string){
 settarget(e.currentTarget.name)
@@ -16,7 +15,7 @@ deleteActivity(id)
 }
 
 const {activityStore}=useStore();
-  const{openForm,closeForm,selectActivity}=activityStore
+  const{openForm,closeForm,selectActivity,loading}=activityStore
     return(
 
        <Segment>
@@ -33,7 +32,7 @@ const {activityStore}=useStore();
                 <Item.Extra>
                    <Button onClick={()=>{selectActivity(activity.id); closeForm()} } floated="right" color="blue" content="View"/>
                    <Button name={activity.id} 
-                   loading={submitting && target===activity.id}
+                   loading={loading && target===activity.id}
                     onClick={(e)=>handledeleteActivity(e,activity.id)  }
                      floated="right" color="red" content="Delete"/>
                 <Label basic content ={activity.category}/>
