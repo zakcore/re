@@ -1,11 +1,15 @@
 var btn =document.getElementById("btn")
 var fn=()=>new Promise((resolve) => {
-    console.log(resolve)
+    resolve ("sssss")
 })
+var meth=(s)=>{
 
+console.log(s+"aaa")
+
+}
 var btnfunc=()=>{
      
-    fn().then()
+    fn().then(meth)
  
  }
 
