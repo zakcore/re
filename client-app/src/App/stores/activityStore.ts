@@ -3,9 +3,9 @@ import { Activity } from "../Models/Activity"
 import agent from "../api/agent"
 import { v4 as uuid } from 'uuid';
 export default class Activitystore{
-  activities:Activity[]=[]
+  activityRegistery=new Map<string,Activity>
   selectedactivity:Activity|undefined=undefined
-  loadingInitial=false
+  loadingInitial=true
   editMode=false
   loading=false;
 
@@ -14,13 +14,13 @@ export default class Activitystore{
   }
 
   loadActivities=async () => {
-    this.setLoadingIntial(true)
+
     try {
   var activities=await agent.activities.list()
   activities.forEach(e=>{
 
     e.date=e.date.split('T')[0];
-   this.activities.push(e)
+   this.activityRegistery.set(e.id,e)
  }
    )
    this.setLoadingIntial(false)
@@ -37,7 +37,7 @@ this.loadingInitial=state
   }
 
   selectActivity=(id:string)=>{
-    this.selectedactivity=this.activities.find(x=>x.id===id)
+    this.selectedactivity=this.activityRegistery.get(id)
   }
   
   cancelSelectActivity=()=>{
@@ -60,7 +60,7 @@ try {
   await agent.activities.create(activity)
   runInAction(()=>{
 this.loading=false
-this.activities.push(activity)
+this.activityRegistery.set(activity.id,activity)
 this.selectedactivity=activity
 this.editMode=false
   })
@@ -82,7 +82,7 @@ try {
   await agent.activities.update(activity)
   runInAction(()=>{
 this.loading=false
-this.activities=[...this.activities.filter(x=>x.id!==activity.id),activity]
+this.activityRegistery.set(activity.id,activity)
 this.selectedactivity=activity
 this.editMode=false
   })
@@ -96,7 +96,31 @@ this.editMode=false
 
 }
 
+deleteActivity=async(id:string)=>{
 
+  this.loading=true
+  try{
+  await agent.activities.delete(id)
+  runInAction(()=>{
+this.loading=false
+this.activityRegistery.delete(id)
+this.cancelSelectActivity()
+  })
+  
+} catch (error) {
+  runInAction(()=>{
+    this.loading=false
+      })
+  console.log(error)
+}
+
+}
+
+get ActivitiesByDate(){
+  return Array.from(this.activityRegistery.values()).sort(
+    (a,b)=>Date.parse(a.date)-Date.parse(b.date)
+  )
+}
 
  
 }
