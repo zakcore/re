@@ -5,30 +5,34 @@ import ActivityDashboard from '../../features/activities/dashboard/ActivityDashb
 import LoadingComponent from './LoadingComponent';
 import { useStore } from '../stores/store';
 import { observer } from 'mobx-react-lite';
+import HomePage from '../../features/home/HomePage';
+import { Route, Routes, useLocation } from 'react-router-dom';
+import ActivitForm from '../../features/activities/form/ActivitForm';
+import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
 function  App()  {
-
-  const {activityStore}=useStore();
-
-useEffect(()=>{
-  activityStore.loadActivities()
-},[activityStore])
-
-if (activityStore.loadingInitial ){
-  return(<LoadingComponent  content='Loading....' /> )
-}else{
+const loaction=useLocation()
   return (
     
     <>
-    <NavBar/>
     <Container style={{marginTop:'7em'}}>
-    <ActivityDashboard/>
+      
+    <Routes>
+
+    <Route path='/' Component={HomePage}/>
+    <Route path={'/(.+)'} Component={NavBar}/>
+    <Route path='/activities' Component={ActivityDashboard}/>
+    <Route path='/activities/:id' Component={ActivityDetails}/>
+    <Route key={loaction.key} path='/createactivity' Component={ActivitForm}/>
+    <Route key={loaction.key} path='/manage/:id' Component={ActivitForm}/>
+</Routes>
+   
     </Container>
      
     </>
   );
 }
 
-}
+
 
 export default observer (App);

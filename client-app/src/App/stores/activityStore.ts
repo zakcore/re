@@ -14,13 +14,12 @@ export default class Activitystore{
   }
 
   loadActivities=async () => {
-
+    this.setLoadingIntial(true)
     try {
   var activities=await agent.activities.list()
   activities.forEach(e=>{
-
-    e.date=e.date.split('T')[0];
-   this.activityRegistery.set(e.id,e)
+    this.SetActivity(e)
+    this.setLoadingIntial(false)
  }
    )
    this.setLoadingIntial(false)
@@ -31,37 +30,57 @@ export default class Activitystore{
     
   }
 
+  loadActivity=async(id:string)=>{
+    let activity=this.GetActivity(id)
+    if(activity)
+    {
+    this.setSelectedActivity(activity)
+    return activity
+    }else{
+      this.setLoadingIntial(true)
+      try {
+        activity=await agent.activities.detail(id)
+        this.SetActivity(activity)
+        this.setSelectedActivity(activity)
+        this.setLoadingIntial(false)
+        return activity
+      } catch (error) {
+        console.log(error)
+        this.setLoadingIntial(false)
+      }
+
+
+
+    }
+
+
+  }
+
+  private SetActivity(e:Activity){
+    e.date=e.date.split('T')[0];
+    this.activityRegistery.set(e.id,e)
+  }
+  private GetActivity(id:string){
+    return this.activityRegistery.get(id)
+  }
+
    setLoadingIntial=(state:boolean)=>{
 this.loadingInitial=state
 
   }
 
-  selectActivity=(id:string)=>{
-    this.selectedactivity=this.activityRegistery.get(id)
+  setSelectedActivity=(activity:Activity)=>{
+    this.selectedactivity=activity
   }
-  
-  cancelSelectActivity=()=>{
-    this.selectedactivity=undefined
-  }
-
-  
-openForm=(id?:string)=>{
-  id?this.selectActivity(id):this.cancelSelectActivity()
-this.editMode=true
-}
-closeForm=()=>{
-  this.editMode=false
-}
 
 createActivity=async(activity:Activity)=>{
   this.loading=true
-activity.id=uuid()
 try {
   await agent.activities.create(activity)
   runInAction(()=>{
 this.loading=false
 this.activityRegistery.set(activity.id,activity)
-this.selectedactivity=activity
+this.setSelectedActivity(activity)
 this.editMode=false
   })
   
@@ -83,7 +102,7 @@ try {
   runInAction(()=>{
 this.loading=false
 this.activityRegistery.set(activity.id,activity)
-this.selectedactivity=activity
+this.setSelectedActivity(activity)
 this.editMode=false
   })
   
@@ -104,7 +123,6 @@ deleteActivity=async(id:string)=>{
   runInAction(()=>{
 this.loading=false
 this.activityRegistery.delete(id)
-this.cancelSelectActivity()
   })
   
 } catch (error) {
