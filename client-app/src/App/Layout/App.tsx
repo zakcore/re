@@ -16,15 +16,14 @@ const loaction=useLocation()
     
     <>
     <Container style={{marginTop:'7em'}}>
-      
+   {loaction.pathname.length>1 &&  <NavBar/>}
     <Routes>
-
     <Route path='/' Component={HomePage}/>
-    <Route path={'/(.+)'} Component={NavBar}/>
-    <Route path='/activities' Component={ActivityDashboard}/>
+    <Route path='/activities'  Component={ActivityDashboard}/>
     <Route path='/activities/:id' Component={ActivityDetails}/>
     <Route key={loaction.key} path='/createactivity' Component={ActivitForm}/>
     <Route key={loaction.key} path='/manage/:id' Component={ActivitForm}/>
+ 
 </Routes>
    
     </Container>

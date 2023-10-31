@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { v4 as uuid } from 'uuid';
 
 import LoadingComponent from '../../../App/Layout/LoadingComponent'
+import { Link } from 'react-router-dom'
 
 export default observer( function  ActivityForm (){
     const {activityStore}=useStore();
@@ -74,7 +75,7 @@ return(
         <Form.Input placeholder='city' value={activity.city} name='city' onChange={HandleOnChange}/>
         <Form.Input placeholder='venue' value={activity.venue} name='venue' onChange={HandleOnChange}/>
         <Button  positive loading={loading} floated='right' type='submit' content='Submit'/>
-        <Button  floated='right' type='button' content='Cancel'/>
+        <Button as={Link} to='/activities' floated='right' type='button' content='Cancel'/>
     </Form>
 </Segment>
 
