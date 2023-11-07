@@ -19,7 +19,7 @@ export default class Activitystore{
   var activities=await agent.activities.list()
   activities.forEach(e=>{
     this.SetActivity(e)
-    this.setLoadingIntial(false)
+    //this.setLoadingIntial(false)
  }
    )
    this.setLoadingIntial(false)
@@ -134,11 +134,27 @@ this.activityRegistery.delete(id)
 
 }
 
+get GroupActivities(){
+
+ return Object.entries (this.ActivitiesByDate.reduce((prev,next)=>{
+  if(prev[next.date]){
+prev[next.date].push(next)
+  }else{
+    prev[next.date]=[next]
+  }
+  
+  return prev
+  }
+  ,{} as {[key:string]:Activity[]})
+  
+)
+  }
+   
 get ActivitiesByDate(){
   return Array.from(this.activityRegistery.values()).sort(
     (a,b)=>Date.parse(a.date)-Date.parse(b.date)
   )
 }
 
- 
+
 }

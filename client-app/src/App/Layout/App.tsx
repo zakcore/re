@@ -10,13 +10,14 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import ActivitForm from '../../features/activities/form/ActivitForm';
 import ActivityDetails from '../../features/activities/details/ActivityDetails';
 
+
+
 function  App()  {
 const loaction=useLocation()
   return (
     
     <>
-    <Container style={{marginTop:'7em'}}>
-   {loaction.pathname.length>1 &&  <NavBar/>}
+    {loaction.pathname.length>1 &&  <NavBar/>}
     <Routes>
     <Route path='/' Component={HomePage}/>
     <Route path='/activities'  Component={ActivityDashboard}/>
@@ -26,7 +27,6 @@ const loaction=useLocation()
  
 </Routes>
    
-    </Container>
      
     </>
   );

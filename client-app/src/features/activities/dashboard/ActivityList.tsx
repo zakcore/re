@@ -1,46 +1,30 @@
-import React, { SyntheticEvent, useState } from "react";
-import { Button, Item, Label, Segment } from "semantic-ui-react";
+import {Header, Item, Segment } from "semantic-ui-react";
 import { useStore } from "../../../App/stores/store";
 import { observer } from "mobx-react-lite";
-import { NavLink } from "react-router-dom";
+import ActivityListItem from "./ActivityListItem";
+import { Fragment } from "react";
 
 
 export default  observer( function ActivityList(){
-const [target,settarget]=useState('')
-function handledeleteActivity(e:SyntheticEvent<HTMLButtonElement>,id:string){
-settarget(e.currentTarget.name)
-deleteActivity(id)
-}
-
 const {activityStore}=useStore();
- const{loading,ActivitiesByDate,deleteActivity}=activityStore
+ const{ActivitiesByDate,GroupActivities}=activityStore
     return(
-
-       <Segment>
-        <Item.Group divided>
-        {ActivitiesByDate.map(activity=>
-        <Item key={activity.id}>
-        <Item.Content>
-            <Item.Header as='a'>{activity.title}</Item.Header>
-            <Item.Meta>{activity.date}</Item.Meta>
-            <Item.Description>
-                <div>{activity.description}</div>
-                <div>{activity.venue},{activity.city}</div>
-            </Item.Description>
-                <Item.Extra>
-                   <Button  as={NavLink} to={`/activities/${activity.id}`}
-                    floated="right" color="blue" content="View"/>
-                   <Button name={activity.id} 
-                   loading={loading && target===activity.id}
-                    onClick={(e)=>handledeleteActivity(e,activity.id)  }
-                     floated="right" color="red" content="Delete"/>
-                <Label basic content ={activity.category}/>
-                </Item.Extra>
-        </Item.Content>
-        </Item>
+      <>
+      {
+         GroupActivities.map(([group,activitiesarr])=>(
+               <Fragment key={group}>
+                  <Header sub color="teal">{group}</Header>
+        {activitiesarr.map(activity=>
+        (<ActivityListItem key={activity.id} activity={activity}/>)
        )}
-       </Item.Group>
-       </Segment> 
+               </Fragment>
+
+         ))
+
+      }
+       
+
+      </>
                 
       
 
