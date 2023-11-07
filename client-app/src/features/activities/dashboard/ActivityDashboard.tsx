@@ -24,6 +24,7 @@ export default observer( function  ActivityDashboard(){
     else{
         
 return(
+  
 
 <Grid>
     <GridColumn width={10}>
@@ -34,6 +35,8 @@ return(
    <ActivityFilters/>
     </GridColumn>
 </Grid>
+
+
 )
     }
 })

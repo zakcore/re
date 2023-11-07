@@ -7,7 +7,8 @@ import './App/Layout/Styles.css';
 import App from './App/Layout/App';
 
 import { StoreContext, store } from './App/stores/store';
-import { BrowserRouter, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { router } from './router/Routes';
 
     
 
@@ -17,9 +18,8 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StoreContext.Provider value={store}>
-      <BrowserRouter>
-    <App />
-      </BrowserRouter>
+    <RouterProvider router={router} />
+
     </StoreContext.Provider>
   </React.StrictMode>
 );
