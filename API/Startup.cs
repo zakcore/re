@@ -27,7 +27,8 @@ namespace API
 
             services.AddControllers().AddFluentValidation(config=>{
                 
-                config.RegisterValidatorsFromAssemblyContaining<Create>();
+            config.RegisterValidatorsFromAssemblyContaining<Create>();
+            
             });
 
            services.AddApplicationServices(_config);
