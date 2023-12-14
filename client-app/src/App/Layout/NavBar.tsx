@@ -17,6 +17,7 @@ export default observer( function Navbar(){
                 Reactivities
             </Menu.Item>
             <Menu.Item as ={NavLink} to='/activities' name='Activities'></Menu.Item>
+            <Menu.Item as ={NavLink} to='/errors' name='errors'></Menu.Item>
             <Menu.Item name='Activities'   >
                 <Button as ={NavLink} to='/createactivity' positive content='Create Activity'/>
             </Menu.Item>

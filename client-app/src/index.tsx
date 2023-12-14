@@ -1,13 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import 'react-calendar/dist/Calendar.css'
+import 'react-toastify/dist/ReactToastify.min.css'
 import 'semantic-ui-css/semantic.min.css'
 import reportWebVitals from './reportWebVitals';
 import './App/Layout/Styles.css';
 import App from './App/Layout/App';
 
 import { StoreContext, store } from './App/stores/store';
-import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { BrowserRouter, RouterProvider, useNavigate,  } from 'react-router-dom';
 import { router } from './router/Routes';
 
     
@@ -18,7 +19,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <StoreContext.Provider value={store}>
-    <RouterProvider router={router} />
+    <RouterProvider router={router}  />
 
     </StoreContext.Provider>
   </React.StrictMode>

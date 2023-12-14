@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Domain;
 using Microsoft.AspNetCore.Mvc;
 using Application.Activities;
+using Application.Core;
 
 namespace API.Controllers
 {
@@ -13,8 +14,8 @@ namespace API.Controllers
 
          [HttpGet]
 
-         public async Task<ActionResult<List<Activity>>>Getactivities(){           
-          return  HandleResult(await Mediator.Send(new List.Query()));
+         public async Task<IActionResult> Getactivities(){    
+          return HandleResult(await Mediator.Send(new List.Query()));
          }
          
 
