@@ -1,18 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { Activity } from "../Models/Activity";
-import { resolve } from "path";
-import { error } from "console";
-import { promises } from "dns";
 import { toast } from "react-toastify";
-import { redirectDocument } from "react-router-dom";
 import globalRouter from "../../router/Routes";
- interface interf {
+import { store } from "../stores/store";
 
-    error:{}
-}
 axios.defaults.baseURL = "http://localhost:5000/API/"
 
 var responseBody = <T>(response: AxiosResponse<T>) => response.data
+
 const seleep = (delay: number) => {
     return new Promise((resolve) => {
         setTimeout(resolve, delay);
@@ -22,16 +17,28 @@ const seleep = (delay: number) => {
 axios.interceptors.response.use(async response => {
     await seleep(1000)
     return response
-},(error:AxiosError)=>{
+},(error)=>{
 
-    const {data,status}=error.response!;
+    const {data,status,config} = error.response!;
     switch (status) {
-        case 400:
-            if(data.error){
-                
 
+        case 400:
+            if(typeof data==='string') {
+                toast.error(data);
             }
-            toast.error("bad request")
+            if(config.method==='get' && data.errors.hasOwnProperty('id')){
+                globalRouter.navigate!("Not-Found");
+            }
+            if (data.errors) {
+                const modalStateErrors = [];
+                for (const n in data.errors) {
+                    if (data.errors[n]) {
+                        modalStateErrors.push(data.errors[n])
+
+                    }
+                }
+                throw modalStateErrors.flat();
+            } 
             break;
     
         case 401:
@@ -45,9 +52,10 @@ axios.interceptors.response.use(async response => {
             
     
         case 500:
-            toast.error("server error")
+            store.commonStore.SetServerError(data);
+            globalRouter.navigate!("ServerError");
             break;
-    
+            
     }
     return Promise.reject(error)
 }

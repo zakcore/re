@@ -7,6 +7,7 @@ import TestErrors from "../features/errors/TestError";
 import NotFound from "../features/errors/NotFound";
 
 import { NavigateFunction } from "react-router-dom";
+import ServerError from "../features/errors/ServerError";
 
 const globalRouter = { navigate: null } as {
   navigate: null | NavigateFunction;
@@ -24,6 +25,7 @@ export const routes: RouteObject[] = [
             {path: 'manage/:id', element: <ActivitForm key='manage' />},
             {path: '/errors', element: <TestErrors/>},
             {path: '*', element: <NotFound/>},
+            {path: 'ServerError', element: <ServerError/>},
         ]
     }
 ]
