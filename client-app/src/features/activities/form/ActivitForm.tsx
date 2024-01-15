@@ -15,7 +15,11 @@ import MyTextArea from '../../../App/common/form/MyTextArea'
 import MySelectInput from '../../../App/common/form/MySelectInput'
 import { categoryOptions } from '../../../App/common/options/categoryOptions'
 import MyDatePicker from '../../../App/common/form/MyDatePicker'
+import DatePicker from 'react-datepicker'
+
 export default observer( function  ActivityForm (){
+    const [startDate, setStartDate] = useState(new Date());
+
     const {activityStore}=useStore();
     let navigateTo = useNavigate();
     const{selectedactivity,createActivity,updateActivity,loading,loadActivity,loadingInitial
@@ -68,7 +72,8 @@ return(
         <MyTextArea rows={3} placeholder='description'   name='description'  />
         <MySelectInput options={categoryOptions} placeholder='category'  name='category'  />
         <MyDatePicker  placeholderText='date'  name='date'
-         showTimeSelect   />
+         showTimeSelect timeCaption='time' 
+         dateFormat='MMMM d,yyyy h:mm aa'  />
         <MyTextInput placeholder='city'   name='city' />
         <MyTextInput placeholder='venue'  name='venue' />
         <Button  positive loading={loading} floated='right' type='submit' content='Submit'/>
