@@ -2,6 +2,7 @@ import { makeAutoObservable, makeObservable, observable, runInAction } from "mob
 import { Activity } from "../Models/Activity"
 import agent from "../api/agent"
 import { v4 as uuid } from 'uuid';
+import { format } from "date-fns";
 export default class Activitystore{
   activityRegistery=new Map<string,Activity>
   selectedactivity:Activity|undefined=undefined
@@ -57,7 +58,7 @@ export default class Activitystore{
   }
 
   private SetActivity(e:Activity){
-    e.date=e.date.split('T')[0];
+    e.date=new Date(e.date!)
     this.activityRegistery.set(e.id,e)
   }
   private GetActivity(id:string){
@@ -137,10 +138,11 @@ this.activityRegistery.delete(id)
 get GroupActivities(){
 
  return Object.entries (this.ActivitiesByDate.reduce((prev,next)=>{
-  if(prev[next.date]){
-prev[next.date].push(next)
+  const nextdate=format(next.date!,'MMMM d,yyyy ')
+  if(prev[nextdate]){
+prev[nextdate].push(next)
   }else{
-    prev[next.date]=[next]
+    prev[nextdate]=[next]
   }
   
   return prev
@@ -152,7 +154,7 @@ prev[next.date].push(next)
    
 get ActivitiesByDate(){
   return Array.from(this.activityRegistery.values()).sort(
-    (a,b)=>Date.parse(a.date)-Date.parse(b.date)
+    (a,b)=>a.date!.getTime() -b.date!.getTime()
   )
 }
 
