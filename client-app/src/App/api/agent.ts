@@ -22,14 +22,14 @@ const seleep = (delay: number) => {
 axios.interceptors.response.use(async response => {
     await seleep(1000)
     return response
-},(error:AxiosError)=>{
+},(error)=>{
 
     const {data,status}=error.response!;
     switch (status) {
         case 400:
             if(data.error){
                 
-
+console.log('here')
             }
             toast.error("bad request")
             break;
