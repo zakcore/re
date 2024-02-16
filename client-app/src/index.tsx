@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom/client';
 import 'react-calendar/dist/Calendar.css'
 import 'react-toastify/dist/ReactToastify.min.css'
 import 'semantic-ui-css/semantic.min.css'
+
 import reportWebVitals from './reportWebVitals';
 import './App/Layout/Styles.css';
+import 'react-datepicker/dist/react-datepicker.css'
 import App from './App/Layout/App';
 
 import { StoreContext, store } from './App/stores/store';
